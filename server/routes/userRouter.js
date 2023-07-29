@@ -1,10 +1,10 @@
+const { signIn } = require('../controller/userController');
+
 const router = require('express').Router()
 
 
 
-router.get('/', (req, res) => {
-  return res.send(req.context.models.users[req.context.me.id]);
-});
+router.post('/signIn',signIn);
 
 
 module.exports = router;

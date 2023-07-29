@@ -5,7 +5,11 @@ const app = express()
 const cors = require('cors')
 const path = require('path')
 const logger = require('morgan')
+const dbConnection = require('./dbConnection/db')
 const userRouter = require('./routes/userRouter')
+
+dbConnection()
+
 
 app.use(
   cors({
