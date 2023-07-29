@@ -2,27 +2,51 @@ import React from 'react'
 import { useFormik } from 'formik';
 import { signUpSchema } from '../schemas';
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
+import {useToast} from '@chakra-ui/react'
 
 const initialValues = {
   name: "",
   email: "",
-  phone:"",
+  // phone:"",
   password:"",
   confirm_password:""
 }
 
 const SignUp = () => {
+  const navigate = useNavigate()
+  const toast = useToast()
  const {values,errors,handleBlur,touched,handleChange,handleSubmit} = useFormik({
     initialValues:initialValues,
     validationSchema:signUpSchema,
-    onSubmit:(values,action) => {
+    onSubmit:async(values,action) => {
        console.log(values)
-       action.resetForm()
+       const { data } =await axios.post("http://localhost:4000/signUp", values);
+       console.log(data)
+
+       if(data.success){
+         toast({
+           title: data.message,
+           status: "success",
+           duration: 5000,
+           isClosable: true,
+           position: "top",
+         });
+         //  action.resetForm()
+         navigate("/signin");
+       }else{
+        toast({
+          title: data.message,
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "top",
+        });
+       }
     }
   })
    
   return (
-   
     <div className="w-screen h-screen bg-teal-900 flex items-center justify-center relative">
       <div className="bg-teal-700  w-4/5 md:w-2/5 mx-auto rounded-xl rounded-tl-3xl rounded-br-3xl ">
         <div className="flex h-full w-full">
@@ -82,7 +106,7 @@ const SignUp = () => {
                   </p>
                 ) : null}
               </div>
-              <div className="md:w-7/12">
+              {/* <div className="md:w-7/12">
                 <label
                   htmlFor="phone"
                   className="block font-semibold text-lg pl-3 text-white"
@@ -105,7 +129,7 @@ const SignUp = () => {
                     {errors.phone}
                   </p>
                 ) : null}
-              </div>
+              </div> */}
               <div className="md:w-7/12">
                 <label
                   htmlFor="password"
@@ -164,6 +188,17 @@ const SignUp = () => {
                   Signin
                 </button>
               </div>
+
+              <p className="my-10 text-white">
+                Already have an account?{" "}
+                <span
+                  onClick={() => navigate("/signin")}
+                  className="cursor-pointer"
+                >
+                  {" "}
+                  click to signin
+                </span>{" "}
+              </p>
             </form>
           </div>
         </div>

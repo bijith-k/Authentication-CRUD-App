@@ -3,6 +3,7 @@ import {useNavigate} from 'react-router-dom'
 import { useFormik } from "formik";
 import { signInSchema } from "../schemas";
 import axios from 'axios'
+import { useToast } from "@chakra-ui/react";
 
 
 const initialValues = {
@@ -12,15 +13,35 @@ const initialValues = {
 
 const SignIn = () => {
   const navigate = useNavigate()
+  const toast = useToast();
   const { values, errors, handleBlur, touched, handleChange, handleSubmit } =
     useFormik({
       initialValues: initialValues,
       validationSchema: signInSchema,
-      onSubmit: (values, action) => {
+      onSubmit: async(values, action) => {
         console.log(values);
-       const {data} =  axios.post("http://localhost:4000/signIn",values)
+       const {data} = await axios.post("http://localhost:4000/signIn",values)
        console.log(data,"data")
-        action.resetForm();
+        if (data.success) {
+          toast({
+            title: data.message,
+            status: "success",
+            duration: 5000,
+            isClosable: true,
+            position: "top",
+          });
+          localStorage.setItem("userToken",data.token)
+          // action.resetForm();
+          navigate("/");
+        } else {
+          toast({
+            title: data.message,
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+            position: "top",
+          });
+        }
       },
     });
 
@@ -34,7 +55,7 @@ const SignIn = () => {
               className=" w-full flex flex-col justify-center items-center"
             >
               <p className="flex items-center justify-center text-center font-bold text-2xl   text-white underline p-3">
-                SIGN UP HERE
+                SIGN IN HERE
               </p>
               <div className="md:w-7/12">
                 <label
@@ -94,7 +115,17 @@ const SignIn = () => {
                   Signin
                 </button>
               </div>
-              <p className="my-10 text-white">
+              <p className="mt-10 text-white">
+                Don't have an account?{" "}
+                <span
+                  onClick={() => navigate("/signup")}
+                  className="cursor-pointer"
+                >
+                  {" "}
+                  click to signup
+                </span>{" "}
+              </p>
+              <p className="mb-10 text-white">
                 Forgot password?{" "}
                 <span
                   onClick={() => navigate("/forgot-password")}
