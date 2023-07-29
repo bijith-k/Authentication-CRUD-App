@@ -1,20 +1,47 @@
 import React from "react";
 import { useFormik } from "formik";
 import { resetPasswordSchema } from "../schemas";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import axios from "axios";
+import { useToast } from "@chakra-ui/react";
 
 const initialValues = {
   password: "",
-  confirm_assword:""
+  confirm_password:""
 };
 
 const ResetPassword = () => {
+  const navigate = useNavigate()
+  const toast = useToast()
+  const [searchParams, setSearchParams] = useSearchParams();
+  const token = searchParams.get("token");
+
   const { values, errors, handleBlur, touched, handleChange, handleSubmit } =
     useFormik({
       initialValues: initialValues,
       validationSchema: resetPasswordSchema,
-      onSubmit: (values, action) => {
+      onSubmit: async(values, action) => {
         console.log(values);
-        action.resetForm();
+       const {data} = await axios.post("http://localhost:4000/reset-password",{...values,token})
+         if (data.success) {
+           toast({
+             title: data.message,
+             status: "success",
+             duration: 5000,
+             isClosable: true,
+             position: "top",
+           });
+           navigate('/signin')
+         } else {
+           toast({
+             title: data.message,
+             status: "error",
+             duration: 5000,
+             isClosable: true,
+             position: "top",
+           });
+         }
+        // action.resetForm();
       },
     });
   return (
