@@ -1,7 +1,7 @@
 import React from "react";
+import {useNavigate} from 'react-router-dom'
 import { useFormik } from "formik";
 import { signInSchema } from "../schemas";
-import login from "../assets/signIn.png";
 import axios from 'axios'
 
 
@@ -11,6 +11,7 @@ const initialValues = {
 };
 
 const SignIn = () => {
+  const navigate = useNavigate()
   const { values, errors, handleBlur, touched, handleChange, handleSubmit } =
     useFormik({
       initialValues: initialValues,
@@ -24,64 +25,68 @@ const SignIn = () => {
     });
 
   return (
-    <div className="w-screen h-screen bg-teal-900 flex items-center relative">
-      <p className="text-center font-bold text-2xl bg-red-300 w-3/4 ml-12 md:ml-40 rounded-full absolute top-10 p-3">
-        SIGN IN HERE
-      </p>
-      <div className="bg-white h-4/5 w-4/5 mx-auto rounded-xl">
+    <div className="w-screen h-screen bg-teal-900 flex items-center justify-center ">
+      <div className="bg-teal-700 min-h-4/5 w-4/5 md:w-2/5 mx-auto rounded-tr-3xl rounded-bl-3xl ">
         <div className="flex h-full w-full">
-          <div className="w-full md:w-1/2 flex justify-center items-center bg-blue-400 rounded-xl md:rounded-xl  ">
-           
+          <div className="w-full  flex justify-center items-center  rounded-xl md:rounded-xl  ">
             <form
               onSubmit={handleSubmit}
               className=" w-full flex flex-col justify-center items-center"
             >
-              <div className="md:w-5/12">
-                <label htmlFor="email" className="block font-bold text-lg pl-3">
-                  Email
+              <p className="flex items-center justify-center text-center font-bold text-2xl   text-white underline p-3">
+                SIGN UP HERE
+              </p>
+              <div className="md:w-7/12">
+                <label
+                  htmlFor="email"
+                  className="block font-semibold text-lg pl-3 text-white"
+                >
+                  Enter your email
                 </label>
                 <input
                   type="email"
                   autoComplete="off"
                   name="email"
                   id="email"
-                  placeholder="Enter your email"
+                  placeholder="email"
                   value={values.email}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  className="border w-full p-3 rounded-lg placeholder:font-semibold"
+                  className="border focus:outline-none w-full p-3 rounded-lg placeholder:font-medium"
                 />
                 {errors.email && touched.email ? (
-                  <p className="text-red-600 font-semibold text-center">
+                  <p className="text-red-300 font-semibold text-center">
                     {errors.email}
                   </p>
                 ) : null}
               </div>
 
-              <div className="md:w-5/12 mt-5">
+              <div className="md:w-7/12 mt-5">
                 <label
                   htmlFor="password"
-                  className="block font-bold text-lg pl-3"
+                  className="block font-semibold text-lg pl-3 text-white"
                 >
-                  Password
+                  Enter your password
                 </label>
                 <input
                   type="password"
                   autoComplete="off"
                   name="password"
                   id="password"
-                  placeholder="Enter password"
+                  placeholder="password"
                   value={values.password}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  className="border w-full p-3 rounded-lg placeholder:font-semibold"
+                  className="border focus:outline-none w-full p-3 rounded-lg placeholder:font-medium"
                 />
                 {errors.password && touched.password ? (
-                  <p className="text-red-600">{errors.password}</p>
+                  <p className="text-red-300 font-semibold text-center">
+                    {errors.password}
+                  </p>
                 ) : null}
               </div>
 
-              <div className="mt-5 bg-teal-800 md:w-5/12 text-center rounded-xl">
+              <div className="mt-5 bg-teal-800 md:w-7/12 text-center rounded-xl">
                 <button
                   type="submit"
                   className=" text-white font-bold p-3 text-lg"
@@ -89,10 +94,17 @@ const SignIn = () => {
                   Signin
                 </button>
               </div>
+              <p className="my-10 text-white">
+                Forgot password?{" "}
+                <span
+                  onClick={() => navigate("/forgot-password")}
+                  className="cursor-pointer"
+                >
+                  {" "}
+                  click to reset
+                </span>{" "}
+              </p>
             </form>
-          </div>
-          <div className="w-1/2 hidden md:block">
-            <img src={login} alt="login image" className="object-cover" />
           </div>
         </div>
       </div>
