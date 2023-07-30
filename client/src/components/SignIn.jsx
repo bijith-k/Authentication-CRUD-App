@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import {useNavigate} from 'react-router-dom'
 import { useFormik } from "formik";
 import { signInSchema } from "../schemas";
 import axios from 'axios'
 import { useToast } from "@chakra-ui/react";
+import UserContext from "../context/UserContext";
 
 
 const initialValues = {
@@ -14,6 +15,9 @@ const initialValues = {
 const SignIn = () => {
   const navigate = useNavigate()
   const toast = useToast();
+  const { user, updateUser } = useContext(UserContext);
+ 
+
   const { values, errors, handleBlur, touched, handleChange, handleSubmit } =
     useFormik({
       initialValues: initialValues,
@@ -31,6 +35,7 @@ const SignIn = () => {
             position: "top",
           });
           localStorage.setItem("userToken",data.token)
+          updateUser(data.userData);
           // action.resetForm();
           navigate("/");
         } else {

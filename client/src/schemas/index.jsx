@@ -27,3 +27,9 @@ export const resetPasswordSchema = Yup.object({
     .required("Please enter your new password")
     .oneOf([Yup.ref("password"), null], "Password must match"),
 });
+
+
+export const notesSchema = Yup.object({
+  title: Yup.string().required("Please enter the title"),
+  content: Yup.string().required("Please add the content")
+});

@@ -2,7 +2,7 @@ import {BrowserRouter,Routes,Route} from 'react-router-dom'
 
 import SignUpPage from './pages/signUpPage';
 import SignInPage from './pages/signInPage';
-import HomePage from './pages/homePage';
+import HomePage from './pages/HomePage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 
