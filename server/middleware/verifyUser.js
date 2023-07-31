@@ -7,7 +7,7 @@ module.exports.verifyUser = (req,res,next) => {
   jwt.verify(token,process.env.SECRET,async(err,decodedToken)=>{
     if(err){
       console.log(err)
-      res.json({status:false,message:"Error while verification of user"})
+      res.json({status:false,message:"Error in authentication"})
     }else{
       const user  = await users.findById({_id:decodedToken.userId})
       if(user){

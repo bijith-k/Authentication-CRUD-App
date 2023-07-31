@@ -87,6 +87,16 @@ const signUp = async(req, res) => {
   }
 }
 
+const userAuth = async(req,res) => {
+  try {
+    const userData = await users.findOne({_id:req.user})
+    res.json({ verified: true, userData })
+  
+  } catch (error) {
+    res.status(400).json({ verified: false, message: error.message })
+  }
+}
+
 const forgotPassword = async(req,res)=>{
   try {
     const {email} = req.body
@@ -133,5 +143,6 @@ module.exports = {
   signIn,
   signUp,
   forgotPassword,
-  resetPassword
+  resetPassword,
+  userAuth
 }

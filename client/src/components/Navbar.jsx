@@ -13,7 +13,7 @@ const Navbar = () => {
     navigate('/signin')
   }
   return (
-    <div className="bg-teal-500 w-screen h-fit flex justify-between sticky top-0">
+    <div className="bg-teal-500 w-screen h-fit flex justify-between">
       <p className="p-5 font-bold text-2xl">
         Welcome {user && <span>{user.name}</span>}
       </p>
